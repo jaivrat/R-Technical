@@ -90,4 +90,57 @@ reduce_right(letters[1:4], function(x, y){
 
 
 
+##----------------------  SEARCH  ---------------------- ##
+
+#You can search for specific elements of a vector using the contains() and detect() functions. contains() will returnTRUE if a specified element is present in a vector, otherwise it returnsFALSE:
+
+purrr::has_element(letters, 'a')
+
+purrr::has_element(letters, "A")
+
+#The detect() function takes a vector and a predicate function as arguments and it returns the first element of the vector for which the predicate function returns TRUE:
+
+detect(20:40, function(x){
+	         x > 22 && x %% 2 == 0
+		      })
+
+
+
+#The detect_index() function takes the same arguments, however it returns the index of the provided vector which contains the first element that satisfies the predicate function:
+
+detect_index(20:40, function(x)
+	            {
+		       x > 22 && x %% 2 == 0
+		    })
+
+
+
+##----------------------  FILTER  ---------------------- ##
+
+#The group of functions that includes keep(), discard(), every(), and some() are known as filter functions. Each of these functions takes a vector and a predicate function. For keep() only the elements of the vector that satisfy the predicate function are returned while all other elements are removed:
+
+keep(1:20, function(x){
+	       x %% 2 == 0
+		    })
+
+
+
+# The discard() function works similarly, it only returns elements that don’t satisfy the predicate function:
+
+discard(1:20, function(x){
+		  x %% 2 == 0
+		    })
+
+# The every() function returns TRUE only if every element in the vector satisfies the predicate function, while the some() function returns TRUE if at least one element in the vector satisfies the predicate function:
+
+every(1:20, function(x){
+	        x %% 2 == 0
+		    })
+
+some(1:20, function(x){
+	       x %% 2 == 0
+		    })
+
+
+
 

@@ -211,7 +211,25 @@ y is a
 > 
 > 
 > 
+> ##----------------------  COMPOSE  ---------------------- ##
+> 
+> # Finally, the compose() function combines any number of functions into one function:
+> 
+> n_unique <- compose(length, unique)
+> 
+> # The composition above is the same as:
+> # n_unique <- function(x){
+> #   length(unique(x))
+> # }
+> 
+> rep(1:5, 1:5)
+ [1] 1 2 2 3 3 3 4 4 4 4 5 5 5 5 5
+> 
+> n_unique(rep(1:5, 1:5))
+[1] 5
+> 
+> 
 > 
 > proc.time()
    user  system elapsed 
-  0.206   0.040   0.400 
+  0.216   0.046   0.425 

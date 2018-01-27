@@ -17,6 +17,8 @@ Type 'demo()' for some demos, 'help()' for on-line help, or
 'help.start()' for an HTML browser interface to help.
 Type 'q()' to quit R.
 
+[Previously saved workspace restored]
+
 > #The map family of functions applies a function to the elements of a data structure, usually a list or a vector. The function is evaluated once for each element of the vector with the vector element as the first argument to the function. The return value is the same kind if data structure (a list or vector) but with every element replaced by the result of the function being evaluated with the corresponding element as the argument to the function. In the purrr package the map() function returns a list , while the map_lgl(), map_chr(), and map_dbl()functions return vectors of logical values, strings, or numbers respectively. Let’s take a look at a few examples: 
 > 
 > library(purrr)
@@ -230,6 +232,30 @@ y is a
 > 
 > 
 > 
+> ##----------------------  PARTIAL APPLICATION  ---------------------- ##
+> #Partial application of functions can allow functions to behave a little like data structures. Using the partial() function from the purrrpackage you can specify some of the arguments of a function, and then partial() will return a function that only takes the unspecified arguments. Let’s take a look at a simple example:
+> 
+> mult_three_n <- function(x, y, z){
++ 	  x * y * z
++ }
+> 
+> mult_by_15 <- partial(mult_three_n, x = 3, y = 5)
+> 
+> mult_by_15(z = 4)
+[1] 60
+> 
+> 
+> #By using partial application you can bind some data to the arguments of a function before using that function elsewhere.
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
+> 
 > proc.time()
    user  system elapsed 
-  0.216   0.046   0.425 
+  0.228   0.043   0.486 

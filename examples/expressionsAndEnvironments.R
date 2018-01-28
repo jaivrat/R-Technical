@@ -1,4 +1,4 @@
-#-----------------   EXPRESSIONS -----------------------------------#
+#-----------------   EXPRESSIONS ----------------------#
 
 #Expressions are encapsulated operations that can be executed by R. 
 #This may sound complicated, but using expressions allows you manipulate 
@@ -112,4 +112,73 @@ first_arg("two", 4, "seven", FALSE)
 
 #Expressions are a powerful tool for writing R programs that can manipulate
 # other R programs.
+
+
+#--------------------------------------------------------#
+#-----------------   ENVIRONMENTS  ----------------------#
+#--------------------------------------------------------#
+
+#Environments are data structures in R that have special properties with regard 
+#to their role in how R code is executed and how memory in R is organized. You 
+#may not realize it but you’re probably already familiar with one environment 
+#called the global environment. Environments formalize relationships between 
+#variable names and values. When you enter x <- 55 into the R console what you’re
+#saying is: assign the value of 55 to a variable called x, and store this assignment 
+#in the global environment. The global environment is therefore where most R users 
+#do most of their programming and analysis.
+
+
+#You can create a new environment using new.env(). You can assign variables in 
+#that environment in a similar way to assigning a named element of a list, or 
+#you can use assign(). You can retrieve the value of a variable just like you 
+#would retrieve the named element of a list, or you can use get(). 
+#Notice that assign() and get() are opposites:
+
+my_new_env <- new.env()
+my_new_env$x <- 4
+my_new_env$x
+#[1] 4
+
+assign("y", 9, envir = my_new_env)
+get("y", envir = my_new_env)
+#[1] 9
+my_new_env$y
+#[1] 9
+
+
+#You can get all of the variable names that have been assigned in an environment 
+# using ls(), you can remove an association between a variable name and a value 
+# using rm(), and you can check if a variable name has been assigned in an environment
+# using exists():
+
+ls(my_new_env)
+#[1] "x" "y"
+rm(y, envir = my_new_env)
+exists("y", envir = my_new_env)
+#[1] TRUE
+exists("x", envir = my_new_env)
+#[1] TRUE
+my_new_env$x
+#[1] 4
+my_new_env$y
+#NULL
+
+
+# Environments are organized in parent/child relationships such that every 
+# environment keeps track of its parent, but parents are unaware of which 
+# environments are their children. Usually the relationships between environments 
+# is not something you should try to directly control. You can see the parents 
+# of the global environment using the search() function:
+
+search()
+
+#Note: .GlobalEnv is child of all loaded libraries. Last loaded library is 
+#the parent of .GlobalEnv
+
+
+
+
+
+
+
 

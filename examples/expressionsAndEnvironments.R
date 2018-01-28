@@ -180,5 +180,83 @@ search()
 
 
 
+#-----------------   EXECUTION ENVIRONMENTS ----------------------#
+
+x <- 10
+my_func <- function(){
+  x <- 5
+  return(x)
+}
+
+my_func()
+
+
+##So what exactly is happening above? First the name x is being assigned the 
+# value 10 in the global environment. Then the name my_func is being assigned the 
+# value of the function function(){x <- 5};return(x)} in the global environment. 
+#When my_func() is executed, a new environment is created called the execution 
+# environment which only exists while my_func() is running. Inside of the execution 
+# environment the name x is assigned the value 5. When return() is executed it looks 
+# first in the execution environment for a value that is assigned to x. 
+#Then the value 5 is returned. In contrast to the situation above, take a look at 
+# this variation:
+
+x <- 10
+
+another_func <- function(){
+	  return(x)
+}
+
+another_func()
+#[1] 10
+
+
+## After seeing the cases above you may be curious if it’s possible for an execution 
+#  environment to manipulate the global environment. You’re already familiar with the 
+#  assignment operator <-, however you should also be aware that there’s another 
+#  assignment operator called the complex assignment operator which looks like <<-. 
+## You can use the complex assignment operator to re-assign or even create name-value 
+#  bindings in the global environment from within an execution environment. In this 
+#  first example, the function assign1() will change the value associated with the name x:
+
+x <- 10
+x
+#[1] 10
+
+assign1 <- function(){
+  x <<- "Wow!"
+}
+
+assign1()
+x
+#[1] "Wow!"
+
+
+
+
+##You can see that the value associated with x has been changed from 10 to "Wow!" in 
+# the global environment. You can also use <<- to assign names to values that have 
+# not been yet been defined in the global environment from inside a function:
+
+#a_variable_name
+#Error in eval(expr, envir, enclos): object 'a_variable_name' not found
+exists("a_variable_name")
+#[1] FALSE
+
+assign2 <- function(){
+  a_variable_name <<- "Magic!"
+}
+
+assign2()
+exists("a_variable_name")
+#[1] TRUE
+a_variable_name
+#[1] "Magic!"
+
+#If you want to see a case for using <<- in action, see the section of this book 
+#about functional programming and the discussion there about memoization.
+
+
+
 
 

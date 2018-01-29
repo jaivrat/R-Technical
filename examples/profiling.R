@@ -67,4 +67,5 @@ profvis ({
 })
 
 #Documentation here:  https://rstudio.github.io/profvis/index.html
-
+# http://adv-r.had.co.nz/Performance.html
+# FasteR!     http://www.noamross.net/blog/2013/4/25/faster-talk.html

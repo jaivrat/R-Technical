@@ -1,0 +1,90 @@
+
+R version 3.4.2 (2017-09-28) -- "Short Summer"
+Copyright (C) 2017 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin15.6.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> 
+> #This section describes the tools for debugging your software in R. R comes with a set of built-in
+> #tools for interactive debugging that can be useful for tracking down the source of problems. 
+> #These functions are
+> 
+> # browser(): an interactive debugging environment that allows you to step through code one expression at a time
+> # debug() / debugonce(): a function that initiates the browser within a function
+> # trace(): this function allows you to temporarily insert pieces of code into other functions to modify their behavior
+> # recover(): a function for navigating the function call stack after a function has thrown an error
+> # traceback(): prints out the function call stack after an error occurs; does nothing if there’s no error
+> 
+> 
+> 
+> 
+> 
+> #-------------------- traceback() -----------------------------#
+> check_n_value <- function(n) {
++     if(n > 0) {
++        stop("n should be <= 0")
++     }
++ }
+> 
+> error_if_n_is_greater_than_zero <- function(n){
++     check_n_value(n)
++     n
++ }
+> 
+> #error_if_n_is_greater_than_zero(5)
+> 
+> # Running the traceback() function immediately after getting this error would give us
+> traceback()
+No traceback available 
+> # 3: stop("n should be <= 0") at #2
+> # 2: check_n_value(n) at #2
+> # 1: error_if_n_is_greater_than_zero(5)
+> 
+> 
+> # From the traceback, we can see that the error occurred in the check_n_value() function. 
+> # Put another way, the stop() function was called from within the check_n_value() function.
+> 
+> 
+> 
+> 
+> 
+> 
+> #-------------------- browser() -----------------------------#
+> #From the traceback output, it is often possible to determine in which function and 
+> #on which line of code an error occurs. If you are the author of the code in question, 
+> #one easy thing to do is to insert a call to the browser() function in the vicinity of
+> #the error (ideally, before the error occurs). The browser()function takes now arguments 
+> #and is just placed wherever you want in the function. Once it is called, you will be in 
+> #the browser environment, which is much like the regular R workspace environment except 
+> #that you are inside a function.
+> 
+> check_n_value <- function(n) {
++     if(n > 0) {
++          browser()  ## Error occurs around here
++          stop("n should be <= 0")
++      }
++ }
+> 
+> error_if_n_is_greater_than_zero(5)
+Called from: check_n_value(n)
+Browse[1]> #Called from: check_n_value(n)
+Browse[1]> #Browse[1]> 
+Browse[1]> 
+debug: stop("n should be <= 0")
+Browse[2]> 
+Error in check_n_value(n) : n should be <= 0
+Calls: error_if_n_is_greater_than_zero -> check_n_value
+Execution halted

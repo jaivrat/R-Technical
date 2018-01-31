@@ -134,13 +134,22 @@ df1 <- dapply(df,
 
 # COMMAND ----------
 
+print(df1)
+collect(df1)
+
+# COMMAND ----------
+
 ss <- collect(df1)
 ss[1]
 
 # COMMAND ----------
 
-library(SparkR)
-head(collect(df1))
+collected_df <- dapplyCollect(df,
+              function(x) {
+                y <- x[x[1] > 1, ]
+                y <- cbind(y, y[1] + 1L)
+              })
+collected_df
 
 # COMMAND ----------
 
@@ -159,3 +168,62 @@ head(ldf, 3)
 
 # COMMAND ----------
 
+# MAGIC %md
+# MAGIC 
+# MAGIC ##### Run a given function on a large dataset grouping by input column(s) and using gapply or gapplyCollect
+# MAGIC 
+# MAGIC ###### gapply
+# MAGIC Apply a function to each group of a SparkDataFrame. The function is to be applied to each group of the SparkDataFrame and should have only two parameters: grouping key and R data.frame corresponding to that key. The groups are chosen from SparkDataFrames column(s). The output of function should be a data.frame. Schema specifies the row format of the resulting SparkDataFrame. It must represent R function’s output schema on the basis of Spark data types. The column names of the returned data.frame are set by user.
+
+# COMMAND ----------
+
+df <- as.DataFrame(faithful)
+
+# Determine six waiting times with the largest eruption time in minutes.
+schema <- structType(structField("waiting", "double"), structField("max_eruption", "double"))
+result <- gapply(
+    df,
+    "waiting",
+    function(key, x) {
+        y <- data.frame(key, max(x$eruptions))
+    },
+    schema)
+head(collect(arrange(result, "max_eruption", decreasing = TRUE)))
+
+##    waiting   max_eruption
+##1      64       5.100
+##2      69       5.067
+##3      71       5.033
+##4      87       5.000
+##5      63       4.933
+##6      89       4.900
+
+# COMMAND ----------
+
+print(dim(df))
+head(collect(df))
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC 
+# MAGIC Let us try user defined function
+
+# COMMAND ----------
+
+mymean <- function(x)
+{
+  mean(x)
+}
+
+
+# Determine six waiting times with the largest eruption time in minutes.
+schema <- structType(structField("waiting", "double"), structField("mean_eruption", "double"))
+result <- gapply(
+    df,
+    "waiting",
+    function(key, x) {
+        y <- data.frame(key, mymean(x$eruptions))
+    },
+    schema)
+head(collect(arrange(result, "mean_eruption", decreasing = TRUE)))

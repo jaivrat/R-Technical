@@ -1,4 +1,10 @@
 # Databricks notebook source
+# MAGIC %md
+# MAGIC 
+# MAGIC https://spark.apache.org/docs/2.0.2/sparkr.html
+
+# COMMAND ----------
+
 # MAGIC %r
 # MAGIC library(SparkR)
 

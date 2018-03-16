@@ -73,7 +73,7 @@ METHOD1 <- function(N=1000)
   {
     #generate three distinct numbers between 1 and 20
     generated = FALSE
-    X <- NULL
+    x <- NULL
     while(!generated)
     {
       x <- ceiling(runif(3, min = 0, max = 20))

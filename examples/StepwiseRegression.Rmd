@@ -1,0 +1,61 @@
+---
+title: "StepwiseRegression"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Stepwise Regression
+
+Forward Selection, backward selection and Stepwise Regression to find the best model.
+
+## Backward Selection
+
+data columns
+"mpg"  "cyl"  "disp" "hp"   "drat" "wt"   "qsec" "vs"   "am"   "gear" "carb"
+
+we want to explain efficiency - is mpg from mtcars
+
+```{r}
+data(mtcars)
+head(mtcars)
+
+colnames(mtcars)
+
+fitAll <- lm(mpg ~ cyl + disp + hp + drat + wt + qsec + vs + am + gear + carb, data = mtcars)
+summary(fitAll)
+
+#eassier
+fitAll <- lm(mpg ~ ., data = mtcars)
+summary(fitAll)
+
+```
+
+## All at once
+
+```{r}
+stepFits <- step(fitAll, direction = "backward")
+```
+
+
+
+### Forward Selection
+
+```{r}
+
+#only intersept
+fitStart = lm(mpg ~ 1, data = mtcars)
+summary(fitStart)
+```
+
+```{r}
+step(object = fitStart, direction = "forward") #, scope=formula(fitAll)
+
+```
+
+
+```{r}
+step(object = fitStart, direction = "forward" , scope=formula(fitAll))
+```
